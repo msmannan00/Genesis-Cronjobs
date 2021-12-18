@@ -39,8 +39,12 @@ class dictionary_model(request_handler):
             log.g().s(MESSAGES.S_FINISHED_LOADING_DICT)
         else:
             log.g().w(MESSAGES.S_RESPONSE_FAILED)
+
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_DICTIONARY_STATUS, [False], [False]])
+
+        log.g().i(MESSAGES.S_DICTIONARY_CLEAN_STARTED)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_DELETE, [MONGODB_COMMANDS.S_CLEAN_DICTIONARY, [helper_method.get_mongodb_date()], [False]])
+        log.g().i(MESSAGES.S_DICTIONARY_CLEAN_ENDED)
 
     # External Reuqest Manager
     def invoke_trigger(self, p_command, p_data=None):

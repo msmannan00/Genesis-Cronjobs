@@ -33,8 +33,8 @@ class application_model(request_handler):
                 sleep(1)
                 self.__m_timer+=1
 
-                # if self.__m_timer % CRONJOB_COMMANDS_TIMER.S_CREATE_BACKUP == 0:
-                #     self.__create_backup()
+                if self.__m_timer % CRONJOB_COMMANDS_TIMER.S_CREATE_BACKUP == 0:
+                    self.__create_backup()
                 if self.__m_timer % CRONJOB_COMMANDS_TIMER.S_INIT_DICTIONARY == 0:
                     self.__init_dictionary()
             except Exception as ex:

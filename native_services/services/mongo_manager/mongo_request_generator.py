@@ -28,7 +28,7 @@ class mongo_request_generator(request_handler):
         return {MONGODB_KEYS.S_DOCUMENT: p_collection,MONGODB_KEYS.S_FILTER:{}}
 
     def __clean_dictionary(self, p_days):
-        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_DICTIONARY_MODEL,MONGODB_KEYS.S_FILTER:{'m_user_generated': {'$eq': True},} ,MONGODB_KEYS.S_VALUE:{}}
+        return {MONGODB_KEYS.S_DOCUMENT: MONGODB_COLLECTIONS.S_DICTIONARY_MODEL,MONGODB_KEYS.S_FILTER:{'m_user_generated': {'$eq': True},'m_last_update': {'$lte': p_days-5}}}
 
     def invoke_trigger(self, p_commands, p_data=None):
         if p_commands == MONGODB_COMMANDS.S_RESET_DICTIONARY:

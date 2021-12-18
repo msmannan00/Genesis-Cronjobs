@@ -65,7 +65,7 @@ class mongo_controller(request_handler):
 
     def __delete(self, p_data):
         try:
-            documents = self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].remove(p_data[MONGODB_KEYS.S_FILTER])
+            documents = self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].delete_one(p_data[MONGODB_KEYS.S_FILTER])
             return documents, MANAGE_USER_MESSAGES.S_DELETE_SUCCESS
         except Exception as ex:
             log.g().e("MONGO 5 : " + MANAGE_USER_MESSAGES.S_DELETE_FAILURE)

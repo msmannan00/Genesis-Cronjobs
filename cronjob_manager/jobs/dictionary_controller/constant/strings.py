@@ -6,3 +6,5 @@ class MESSAGES:
     S_LOADING_WORD = "dictionary is loading : "
     S_RESPONSE_FAILED = "dictionary synced failed"
     S_DICTIONARY_UPDATE_STARTED = "dictionary update started"
+    S_DICTIONARY_CLEAN_STARTED = "dictionary clean started"
+    S_DICTIONARY_CLEAN_ENDED = "dictionary clean ended"
