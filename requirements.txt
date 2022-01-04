@@ -2,6 +2,10 @@
 pymongo
 requests
 termcolor
+elasticsearch==7.12.0
+argparse
+requests
+wsgiref
 
 ###### Requirements with Version Specifiers ######
 

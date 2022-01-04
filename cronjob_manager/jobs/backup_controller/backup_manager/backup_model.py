@@ -1,5 +1,6 @@
 import os
 import shutil
+
 from datetime import datetime
 from bson import json_util
 from cronjob_manager.jobs.backup_controller.backup_manager.backup_enums import BACKUP_MODEL_COMMANDS
@@ -7,6 +8,8 @@ from cronjob_manager.jobs.backup_controller.constant.constant import MONGO, PATH
 from cronjob_manager.jobs.backup_controller.constant.strings import MESSAGES
 from cronjob_manager.shared_model.request_handler import request_handler
 from log_manager.log_controller import log
+from native_services.services.elastic_manager.elastic_controller import elastic_controller
+from native_services.services.elastic_manager.elastic_enums import ELASTIC_CRUD_COMMANDS, ELASTIC_REQUEST_COMMANDS, ELASTIC_INDEX
 from native_services.services.mongo_manager.mongo_controller import mongo_controller
 from native_services.services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_COMMANDS
 
@@ -36,7 +39,7 @@ class backup_model(request_handler):
 
         log.g().i(MESSAGES.S_CLEAN_BACKUP)
 
-    def __create_backup(self, p_path, p_root_path, p_max_backup_count):
+    def __create_mongo_backup(self, p_path, p_root_path, p_max_backup_count):
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_BACKUP_STATUS, [True], [False]])
 
         if os.path.isdir(p_path) is False:
@@ -62,17 +65,44 @@ class backup_model(request_handler):
             log.g().w(MESSAGES.S_BACKUP_ALREADY_CREATED)
         mongo_controller.get_instance().invoke_trigger(MONGO_CRUD.S_UPDATE, [MONGODB_COMMANDS.S_UPDATE_BACKUP_STATUS, [False], [False]])
 
+    def __create_elastic_backup(self, p_path, p_root_path, p_max_backup_count):
+        if os.path.isdir(p_path) is False:
+
+            while self.__count_backup(p_root_path) >= p_max_backup_count:
+                self.__remove_oldest_directory(p_root_path)
+
+            log.g().i(MESSAGES.S_MAKING_DIRECTORY)
+            os.makedirs(p_path)
+
+            m_result = elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_READ, [ELASTIC_REQUEST_COMMANDS.S_BACKUP, [], [None]])
+            with open(p_path + "//" + ELASTIC_INDEX.S_WEB_INDEX + '.json', 'w') as file:
+                file.write('[')
+                for document in m_result:
+                    file.write(json_util.dumps(document))
+                    file.write(',')
+                file.write(']')
+
+            log.g().s(MESSAGES.S_BACKUP_CREATED)
+        else:
+            log.g().w(MESSAGES.S_BACKUP_ALREADY_CREATED)
+
     def __init_backup(self):
-        if os.path.isdir(PATHS.S_EXTENDED_BACKUP_PATH) is False:
-            os.mkdir(PATHS.S_EXTENDED_BACKUP_PATH)
+        if os.path.isdir(PATHS.S_MONGO_EXTENDED_BACKUP_PATH) is False:
+            os.mkdir(PATHS.S_MONGO_EXTENDED_BACKUP_PATH)
 
         m_date = datetime.today().strftime('%Y-%m-%d')
 
-        log.g().i(MESSAGES.S_STARTING_BACKUP)
-        self.__create_backup(PATHS.S_BACKUP_PATH + m_date,PATHS.S_BACKUP_PATH ,SETTINGS.S_MAX_BACKUP_COUNT)
+        log.g().i(MESSAGES.S_MONGO_STARTING_BACKUP)
+        self.__create_mongo_backup(PATHS.S_MONGO_BACKUP_PATH + m_date, PATHS.S_MONGO_BACKUP_PATH, SETTINGS.S_MAX_BACKUP_COUNT)
 
-        log.g().i(MESSAGES.S_STARTING_EXTENDED_BACKUP)
-        self.__create_backup(PATHS.S_EXTENDED_BACKUP_PATH + m_date,PATHS.S_EXTENDED_BACKUP_PATH ,SETTINGS.S_EXTENDED_MAX_BACKUP_COUNT)
+        log.g().i(MESSAGES.S_MONGO_STARTING_EXTENDED_BACKUP)
+        self.__create_mongo_backup(PATHS.S_MONGO_EXTENDED_BACKUP_PATH + m_date, PATHS.S_MONGO_EXTENDED_BACKUP_PATH, SETTINGS.S_EXTENDED_MAX_BACKUP_COUNT)
+
+        log.g().i(MESSAGES.S_ELASTIC_STARTING_BACKUP)
+        self.__create_elastic_backup(PATHS.S_ELASTIC_BACKUP_PATH + m_date, PATHS.S_ELASTIC_BACKUP_PATH, SETTINGS.S_MAX_BACKUP_COUNT)
+
+        log.g().i(MESSAGES.S_ELASTIC_STARTING_EXTENDED_BACKUP)
+        self.__create_elastic_backup(PATHS.S_ELASTIC_EXTENDED_BACKUP_PATH + m_date, PATHS.S_ELASTIC_EXTENDED_BACKUP_PATH, SETTINGS.S_EXTENDED_MAX_BACKUP_COUNT)
 
     # External Reuqest Manager
     def invoke_trigger(self, p_command, p_data=None):
