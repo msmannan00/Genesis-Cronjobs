@@ -11,5 +11,5 @@ class MONGO:
     S_COLLECTION = ['index_model', 'backup_model', 'unique_host', 'tfidf_model', 'dictionary_model', 'crawlable_url_model']
 
 class SETTINGS:
-    S_MAX_BACKUP_COUNT = 5
-    S_EXTENDED_MAX_BACKUP_COUNT = 30
+    S_MAX_BACKUP_COUNT = 2
+    S_EXTENDED_MAX_BACKUP_COUNT = 20

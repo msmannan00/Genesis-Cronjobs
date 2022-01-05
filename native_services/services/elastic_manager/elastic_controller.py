@@ -38,7 +38,7 @@ class elastic_controller(request_handler):
 
     def __update(self, p_data, p_upsert):
         try:
-            self.__m_connection.index(body=p_data[ELASTIC_KEYS.S_VALUE], index=p_data[ELASTIC_KEYS.S_DOCUMENT])
+            self.__m_connection.update_by_query(body=p_data[ELASTIC_KEYS.S_VALUE], index=p_data[ELASTIC_KEYS.S_DOCUMENT])
         except Exception as ex:
             log.g().e("ELASTIC 2 : " + MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
             return False, str(ex)
@@ -49,6 +49,13 @@ class elastic_controller(request_handler):
             return m_json['hits']['hits']
         except Exception as ex:
             log.g().e("ELASTIC 3 : " + MANAGE_ELASTIC_MESSAGES.S_INSERT_FAILURE + " : " + str(ex))
+            return False, str(ex)
+
+    def __delete(self, p_data):
+        try:
+            self.__m_connection.delete_by_query(index=p_data[ELASTIC_KEYS.S_DOCUMENT], body=p_data[ELASTIC_KEYS.S_FILTER])
+        except Exception as ex:
+            log.g().e("ELASTIC 4 : " + MANAGE_ELASTIC_MESSAGES.S_DELETE_FAILURE + " : " + str(ex))
             return False, str(ex)
 
 
@@ -62,3 +69,5 @@ class elastic_controller(request_handler):
             return self.__update(m_request, m_param[0])
         if p_commands == ELASTIC_CRUD_COMMANDS.S_READ:
             return self.__read(m_request)
+        if p_commands == ELASTIC_CRUD_COMMANDS.S_DELETE:
+            return self.__delete(m_request)

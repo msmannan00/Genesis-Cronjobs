@@ -19,6 +19,9 @@ class ELASTIC_KEYS:
 
 class ELASTIC_REQUEST_COMMANDS:
     S_BACKUP = 1
+    S_DEL_CLEAN = 2
+    S_CLEAN_MONTHLY_SCORE = 3
+    S_CLEAN_DAILY_SCORE = 4
 
 class MANAGE_ELASTIC_MESSAGES:
     S_INSERT_FAILURE = "[1] Something unexpected happened while inserting"
