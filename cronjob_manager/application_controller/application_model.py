@@ -4,16 +4,14 @@ import warnings
 from cronjob_manager.jobs.cleanup_controller.cleanup_manager.cleanup_controller import cleanup_controller
 from native_services.services.mongo_manager.mongo_controller import mongo_controller
 from native_services.services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_COMMANDS
-
-warnings.filterwarnings("ignore", category=RuntimeWarning)
 from time import sleep
 from log_manager.log_controller import log
-from cronjob_manager.constants.cronjob_commands import DICTIONARY_CONTROLLER_COMMANDS, BACKUP_CONTROLLER_COMMANDS, \
-    CLEANUP_CONTROLLER_COMMANDS
+from cronjob_manager.constants.cronjob_commands import BACKUP_CONTROLLER_COMMANDS, CLEANUP_CONTROLLER_COMMANDS
 from cronjob_manager.jobs.backup_controller.backup_manager.backup_controller import backup_controller
-from cronjob_manager.jobs.dictionary_controller.dictionary_manager.dictionary_controller import dictionary_controller
 from cronjob_manager.application_controller.application_enums import APPICATION_MODEL_COMMANDS, CRONJOB_COMMANDS_TIMER
 from cronjob_manager.shared_model.request_handler import request_handler
+
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 class application_model(request_handler):
     __instance = None
@@ -22,9 +20,6 @@ class application_model(request_handler):
     # Initializations
     def __init__(self):
         pass
-
-    def __init_dictionary(self):
-        dictionary_controller.get_instance().invoke_trigger(DICTIONARY_CONTROLLER_COMMANDS.S_INIT_DICTIONARY)
 
     def __create_backup(self):
         backup_controller.get_instance().invoke_trigger(BACKUP_CONTROLLER_COMMANDS.S_CREATE_BACKUP)

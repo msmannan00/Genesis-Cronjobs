@@ -5,6 +5,7 @@ termcolor
 elasticsearch==7.12.0
 argparse
 requests
+flask
 
 ###### Requirements with Version Specifiers ######
 
