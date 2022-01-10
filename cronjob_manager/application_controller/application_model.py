@@ -8,7 +8,8 @@ from time import sleep
 from log_manager.log_controller import log
 from cronjob_manager.constants.cronjob_commands import BACKUP_CONTROLLER_COMMANDS, CLEANUP_CONTROLLER_COMMANDS
 from cronjob_manager.jobs.backup_controller.backup_manager.backup_controller import backup_controller
-from cronjob_manager.application_controller.application_enums import APPICATION_MODEL_COMMANDS, CRONJOB_COMMANDS_TIMER
+from cronjob_manager.application_controller.application_enums import APPICATION_MODEL_COMMANDS, CRONJOB_COMMANDS_TIMER, \
+    CRONJOB_MESSAGES
 from cronjob_manager.shared_model.request_handler import request_handler
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
@@ -39,6 +40,8 @@ class application_model(request_handler):
                    self.__create_backup()
                 if self.__m_timer % CRONJOB_COMMANDS_TIMER.S_START_CLEANUP == 0:
                    self.__start_cleanup()
+                if self.__m_timer % CRONJOB_COMMANDS_TIMER.S_PING == 0:
+                    log.g().i("CRONJOB : " + CRONJOB_MESSAGES.S_ALIVE)
 
             except Exception as ex:
                 log.g().e("APP 1 : " + str(ex))
