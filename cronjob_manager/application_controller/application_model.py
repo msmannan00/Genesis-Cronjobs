@@ -44,7 +44,7 @@ class application_model(request_handler):
                     log.g().i("CRONJOB : " + CRONJOB_MESSAGES.S_ALIVE)
 
             except Exception as ex:
-                log.g().e("APP 1 : " + str(ex))
+                log.g().e("CRONJOB 1 : " + str(ex))
 
     def __on_start_cronjob(self):
         self.__m_main_thread = threading.Thread(target=self.__init_cronjob)
