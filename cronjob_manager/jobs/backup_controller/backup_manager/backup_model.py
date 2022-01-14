@@ -87,9 +87,6 @@ class backup_model(request_handler):
             log.g().w(MESSAGES.S_BACKUP_ALREADY_CREATED)
 
     def __init_backup(self):
-        if os.path.isdir(PATHS.S_MONGO_EXTENDED_BACKUP_PATH) is False:
-            os.mkdir(PATHS.S_MONGO_EXTENDED_BACKUP_PATH)
-
         m_date = datetime.today().strftime('%Y-%m-%d')
 
         log.g().i(MESSAGES.S_MONGO_STARTING_BACKUP)
