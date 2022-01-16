@@ -1,4 +1,4 @@
-/parsed_index.json
-/reported_websites.json
-/submitted_websites.json
+parsed_index.json
+reported_websites.json
+submitted_websites.json
 *.pyc
