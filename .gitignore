@@ -1,4 +1,4 @@
-C:\Workspace\Genesis-Cronjobs\cronjob_manager\jobs\backup_controller\raw\*
-
-\raw\*.json
+/parsed_index.json
+/reported_websites.json
+/submitted_websites.json
 *.pyc
