@@ -9,5 +9,5 @@ class MONGO:
     S_COLLECTION = ['reported_websites', 'submitted_websites']
 
 class SETTINGS:
-    S_MAX_BACKUP_COUNT = 2
+    S_MAX_BACKUP_COUNT = 5
     S_EXTENDED_MAX_BACKUP_COUNT = 20
