@@ -6,7 +6,7 @@ class PATHS:
     S_ELASTIC_BACKUP_PATH = S_PROJECT_PATH + "/Genesis-Cronjobs/cronjob_manager/jobs/backup_controller/raw/elastic_backup/"
 
 class MONGO:
-    S_COLLECTION = ['index_model', 'backup_model', 'unique_host', 'tfidf_model', 'dictionary_model', 'crawlable_url_model']
+    S_COLLECTION = ['reported_websites', 'submitted_websites']
 
 class SETTINGS:
     S_MAX_BACKUP_COUNT = 2
