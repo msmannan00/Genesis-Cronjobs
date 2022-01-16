@@ -1,4 +1,4 @@
-C:\Workspace\Genesis-Cronjobs\cronjob_manager\jobs\backup_controller\raw\mongo_backup\*\reported_websites.json
+C:\Workspace\Genesis-Cronjobs\cronjob_manager\jobs\backup_controller\raw\*
 
 \raw\*.json
 *.pyc
