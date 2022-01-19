@@ -94,13 +94,12 @@ class backup_model(request_handler):
 
         log.g().i(MESSAGES.S_ELASTIC_STARTING_BACKUP)
         self.__create_elastic_backup(PATHS.S_ELASTIC_BACKUP_PATH + m_date, PATHS.S_ELASTIC_BACKUP_PATH, SETTINGS.S_MAX_BACKUP_COUNT)
-        '''
+
         log.g().i(MESSAGES.S_MONGO_STARTING_EXTENDED_BACKUP)
         self.__create_mongo_backup(PATHS.S_MONGO_EXTENDED_BACKUP_PATH + m_date, PATHS.S_MONGO_EXTENDED_BACKUP_PATH, SETTINGS.S_EXTENDED_MAX_BACKUP_COUNT)
 
         log.g().i(MESSAGES.S_ELASTIC_STARTING_EXTENDED_BACKUP)
-        self.__create_elastic_backup(PATHS.S_ELASTIC_EXTENDED_BACKUP_PATH + m_date, PATHS.S_ELASTIC_EXTENDED_BACKUP_PATH, SETTINGS.S_EXTENDED_MAX_BACKUP_COUNT)
-        '''
+        self.__create_elastic_backup(PATHS.S_ELASTIC_EXTENDED_BACKUP_PATH + m_date, PATHS.S_MONGO_EXTENDED_BACKUP_PATH, SETTINGS.S_EXTENDED_MAX_BACKUP_COUNT)
 
     # External Reuqest Manager
     def invoke_trigger(self, p_command, p_data=None):
