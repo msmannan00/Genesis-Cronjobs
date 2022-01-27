@@ -3,7 +3,7 @@ import warnings
 
 import requests
 
-from cronjob_manager.constants.constant import constants
+from cronjob_manager.constants.constant import CONSTANTS
 from cronjob_manager.jobs.cleanup_controller.cleanup_manager.cleanup_controller import cleanup_controller
 from native_services.services.mongo_manager.mongo_controller import mongo_controller
 from native_services.services.mongo_manager.mongo_enums import MONGO_CRUD, MONGODB_COMMANDS
@@ -31,7 +31,8 @@ class application_model(request_handler):
         cleanup_controller.get_instance().invoke_trigger(CLEANUP_CONTROLLER_COMMANDS.S_START_CLEANUP)
 
     def __update_status(self):
-        requests.get(constants.S_UPDATE_STATUS_URL, timeout=10)
+        requests.get(CONSTANTS.S_UPDATE_STATUS_URL, timeout=10)
+        log.g().i("status updated")
 
     def __init_cronjob(self):
         while True:
