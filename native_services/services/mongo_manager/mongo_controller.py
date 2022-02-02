@@ -51,7 +51,7 @@ class mongo_controller(request_handler):
                 documents = self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].find(p_data[MONGODB_KEYS.S_FILTER])
             return documents
         except Exception as ex:
-            log.g().e("MONGO 3 : " + MANAGE_USER_MESSAGES.S_READ_FAILURE)
+            log.g().e("MONGO 3 : " + MANAGE_USER_MESSAGES.S_READ_FAILURE + " : " + str(ex))
             return str(ex)
 
     def __update(self, p_data, p_upsert):
@@ -60,7 +60,7 @@ class mongo_controller(request_handler):
             return True, MANAGE_USER_MESSAGES.S_UPDATE_SUCCESS
 
         except Exception as ex:
-            log.g().e("MONGO 4 : " + MANAGE_USER_MESSAGES.S_UPDATE_FAILURE)
+            log.g().e("MONGO 4 : " + MANAGE_USER_MESSAGES.S_UPDATE_FAILURE + " : " + str(ex))
             return False, str(ex)
 
     def __delete(self, p_data):
@@ -68,7 +68,7 @@ class mongo_controller(request_handler):
             documents = self.__m_connection[p_data[MONGODB_KEYS.S_DOCUMENT]].delete_one(p_data[MONGODB_KEYS.S_FILTER])
             return documents, MANAGE_USER_MESSAGES.S_DELETE_SUCCESS
         except Exception as ex:
-            log.g().e("MONGO 5 : " + MANAGE_USER_MESSAGES.S_DELETE_FAILURE)
+            log.g().e("MONGO 5 : " + MANAGE_USER_MESSAGES.S_DELETE_FAILURE + " : " + str(ex))
             return False, str(ex)
 
     def invoke_trigger(self, p_commands, p_data=None):
