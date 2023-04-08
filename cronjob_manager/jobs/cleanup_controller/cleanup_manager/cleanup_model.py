@@ -17,9 +17,9 @@ class cleanup_model(request_handler):
     def __start_cleanup(self):
         log.g().i(CLEANUP_MESSAGES.S_CLEANUP_STARTING)
         log.g().i(CLEANUP_MESSAGES.S_CLEANUP_MONTHLY)
-        elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_DELETE, [ELASTIC_REQUEST_COMMANDS.S_DEL_CLEAN, [helper_method.get_time()-12], [None]])
+        elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_UPDATE, [ELASTIC_REQUEST_COMMANDS.S_CLEAN_MONTHLY_SCORE, [helper_method.get_time()-30], [False]])
         log.g().i(CLEANUP_MESSAGES.S_CLEANUP_MID_MONTHLY)
-        elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_UPDATE, [ELASTIC_REQUEST_COMMANDS.S_CLEAN_MONTHLY_SCORE, [helper_method.get_time()-6], [False]])
+        elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_UPDATE, [ELASTIC_REQUEST_COMMANDS.S_CLEAN_MONTHLY_SCORE, [helper_method.get_time()-15], [False]])
         log.g().i(CLEANUP_MESSAGES.S_CLEANUP_DAILY)
         elastic_controller.get_instance().invoke_trigger(ELASTIC_CRUD_COMMANDS.S_UPDATE, [ELASTIC_REQUEST_COMMANDS.S_CLEAN_DAILY_SCORE, [helper_method.get_time()-1], [None]])
         log.g().i(CLEANUP_MESSAGES.S_CLEANUP_FINISHED)
